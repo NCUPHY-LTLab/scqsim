@@ -12,10 +12,17 @@ No stable SCQGate release exists. The `main` branch is only the repository
 charter until an accepted and stabilized release is promoted. Active V1 work
 belongs on `develop` and uses development versions.
 
+The current `develop` candidate is `1.0.0.dev0`. It defines immutable public
+contracts and fail-closed source/runtime boundaries; it is intentionally not a
+runnable dynamics checkpoint. The first runnable checkpoint will be
+`1.0.0.dev1` after the SCNSim portable source handoff is implemented.
+
 SCQGate does not replace SCNSim or SCGSim. Those projects remain independent
 classical-model and electromagnetic-model producers. Private device models,
 pulses, state maps, targets, and evidence are not public SCQGate package data
 or examples.
+
+See [architecture](docs/architecture.md) and [contracts](docs/contracts.md).
 
 ## License
 
