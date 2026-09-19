@@ -510,7 +510,7 @@ wheels = [
 ]
 
 [[package]]
-name = "scqgate"
+name = "scqsim"
 version = "1.0.0.dev0"
 source = { editable = "." }
 dependencies = [

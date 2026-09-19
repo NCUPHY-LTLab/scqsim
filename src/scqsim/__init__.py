@@ -1,4 +1,4 @@
-"""SCQGate representation-neutral quantum realization and gate contracts."""
+"""SCQSim representation-neutral quantum realization and gate contracts."""
 
 from ._version import __version__
 from .models import (
@@ -42,7 +42,7 @@ from .models import (
     RepresentationLayer,
     RepresentationRef,
     RouteMismatchError,
-    SCQGateError,
+    SCQSimError,
     SingularCapacitanceError,
     SourceRoute,
     StateSurvival,
@@ -112,7 +112,7 @@ __all__ = [
     "RepresentationRef",
     "RouteMismatchError",
     "SCNSimNodeFluxAdapter",
-    "SCQGateError",
+    "SCQSimError",
     "SingularCapacitanceError",
     "SourceRoute",
     "StateSurvival",

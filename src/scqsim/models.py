@@ -1,4 +1,4 @@
-"""Immutable public contracts for SCQGate's representation-neutral boundary."""
+"""Immutable public contracts for SCQSim's representation-neutral boundary."""
 
 from __future__ import annotations
 
@@ -20,11 +20,11 @@ _SHA256 = re.compile(r"[0-9a-f]{64}")
 _DurableT = TypeVar("_DurableT", bound="DurableModel")
 
 
-class SCQGateError(Exception):
-    """Base exception for explicit SCQGate failures."""
+class SCQSimError(Exception):
+    """Base exception for explicit SCQSim failures."""
 
 
-class ArtifactValidationError(SCQGateError, ValueError):
+class ArtifactValidationError(SCQSimError, ValueError):
     """A durable artifact violates its schema or integrity contract."""
 
 
@@ -56,7 +56,7 @@ class ForbiddenSourceEvidenceError(ArtifactValidationError):
     """Classical response evidence was offered as a Hermitian source."""
 
 
-class CapabilityUnavailableError(SCQGateError, RuntimeError):
+class CapabilityUnavailableError(SCQSimError, RuntimeError):
     """A requested capability is intentionally unavailable in this candidate."""
 
 
@@ -238,7 +238,7 @@ class DurableModel:
 
 @dataclass(frozen=True)
 class ArtifactRef(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.artifact-ref"
+    SCHEMA_ID: ClassVar[str] = "scqsim.artifact-ref"
 
     artifact_id: str
     artifact_schema_id: str
@@ -269,7 +269,7 @@ def _decode_model(cls: type[_DurableT], document: Mapping[str, object]) -> _Dura
     }
     model = cls(**decoded)
     if derived_fields and isinstance(model, StateSurvival):
-        leakage = _decode_value(document["leakage"], float, "scqgate.state-survival.leakage")
+        leakage = _decode_value(document["leakage"], float, "scqsim.state-survival.leakage")
         if leakage != model.leakage:
             raise ArtifactValidationError("derived leakage does not match survival")
     return model
@@ -371,7 +371,7 @@ class BindingRelation(StrEnum):
 class SubsystemRef(DurableModel):
     """Stable semantic identity with no representation-specific fields."""
 
-    SCHEMA_ID: ClassVar[str] = "scqgate.subsystem-ref"
+    SCHEMA_ID: ClassVar[str] = "scqsim.subsystem-ref"
 
     subsystem_id: str
     semantic_authority: ArtifactRef
@@ -383,7 +383,7 @@ class SubsystemRef(DurableModel):
 
 @dataclass(frozen=True)
 class RepresentationRef(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.representation-ref"
+    SCHEMA_ID: ClassVar[str] = "scqsim.representation-ref"
 
     representation_id: str
     producer: str
@@ -399,7 +399,7 @@ class RepresentationRef(DurableModel):
 
 @dataclass(frozen=True)
 class RepresentationBinding(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.representation-binding"
+    SCHEMA_ID: ClassVar[str] = "scqsim.representation-binding"
 
     binding_id: str
     subsystem_ids: tuple[str, ...]
@@ -439,7 +439,7 @@ class Unit(StrEnum):
 
 @dataclass(frozen=True)
 class DenseMatrix(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.dense-matrix"
+    SCHEMA_ID: ClassVar[str] = "scqsim.dense-matrix"
 
     row_ids: tuple[str, ...]
     column_ids: tuple[str, ...]
@@ -551,7 +551,7 @@ class GaugeMethod(StrEnum):
 
 @dataclass(frozen=True)
 class GaugeResolution(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.gauge-resolution"
+    SCHEMA_ID: ClassVar[str] = "scqsim.gauge-resolution"
 
     physical_coordinate_ids: tuple[str, ...]
     quantization_coordinate_ids: tuple[str, ...]
@@ -606,7 +606,7 @@ class GaugeResolution(DurableModel):
 
 @dataclass(frozen=True)
 class JosephsonTerm(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.josephson-term"
+    SCHEMA_ID: ClassVar[str] = "scqsim.josephson-term"
 
     branch_id: str
     representation_id: str
@@ -648,7 +648,7 @@ class MatrixContributionKind(StrEnum):
 class MatrixContribution(DurableModel):
     """Sealed branch contribution used to verify aggregate C and K matrices."""
 
-    SCHEMA_ID: ClassVar[str] = "scqgate.matrix-contribution"
+    SCHEMA_ID: ClassVar[str] = "scqsim.matrix-contribution"
 
     contribution_id: str
     branch_ids: tuple[str, ...]
@@ -677,7 +677,7 @@ class ControlClassification(StrEnum):
 
 @dataclass(frozen=True)
 class ControlOperatorSpec(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.control-operator-spec"
+    SCHEMA_ID: ClassVar[str] = "scqsim.control-operator-spec"
 
     control_id: str
     operator_id: str
@@ -717,7 +717,7 @@ class ControlOperatorSpec(DurableModel):
 
 @dataclass(frozen=True)
 class EnvironmentSplit(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.environment-split"
+    SCHEMA_ID: ClassVar[str] = "scqsim.environment-split"
 
     excluded_representation_ids: tuple[str, ...]
     evidence_ref: ArtifactRef
@@ -736,7 +736,7 @@ class SourceRoute(StrEnum):
 
 @dataclass(frozen=True)
 class CircuitQuantizationSource(DurableModel):
-    """Full conservative SCNSim node-flux artifact for SCQGate."""
+    """Full conservative SCNSim node-flux artifact for SCQSim."""
 
     SCHEMA_ID: ClassVar[str] = "circuit-quantization-source-v1"
 
@@ -1008,7 +1008,7 @@ class CircuitQuantizationSource(DurableModel):
 
 @dataclass(frozen=True)
 class HilbertFactorSpec(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.hilbert-factor-spec"
+    SCHEMA_ID: ClassVar[str] = "scqsim.hilbert-factor-spec"
 
     factor_id: str
     subsystem_ids: tuple[str, ...]
@@ -1049,7 +1049,7 @@ class HilbertFactorSpec(DurableModel):
 class HilbertSpaceNode(DurableModel):
     """Recursive hierarchy: leaves carry factors, parents carry children."""
 
-    SCHEMA_ID: ClassVar[str] = "scqgate.hilbert-space-node"
+    SCHEMA_ID: ClassVar[str] = "scqsim.hilbert-space-node"
 
     node_id: str
     factor: HilbertFactorSpec | None = None
@@ -1079,7 +1079,7 @@ class BasisMode(StrEnum):
 
 @dataclass(frozen=True)
 class QuantumRealizationSpec(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.quantum-realization-spec"
+    SCHEMA_ID: ClassVar[str] = "scqsim.quantum-realization-spec"
 
     realization_id: str
     source: ArtifactRef
@@ -1135,7 +1135,7 @@ class CompiledQuantumModel:
 
 @dataclass(frozen=True)
 class LogicalStateLineage(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.logical-state-lineage"
+    SCHEMA_ID: ClassVar[str] = "scqsim.logical-state-lineage"
 
     logical_state_id: str
     projector_ref: ArtifactRef
@@ -1151,7 +1151,7 @@ class LogicalStateLineage(DurableModel):
 
 @dataclass(frozen=True)
 class LogicalEncoding(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.logical-encoding"
+    SCHEMA_ID: ClassVar[str] = "scqsim.logical-encoding"
 
     encoding_id: str
     realization_ref: ArtifactRef
@@ -1168,7 +1168,7 @@ class LogicalEncoding(DurableModel):
 
 @dataclass(frozen=True)
 class ControlPoint(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.control-point"
+    SCHEMA_ID: ClassVar[str] = "scqsim.control-point"
 
     time_seconds: float
     in_phase: float
@@ -1182,7 +1182,7 @@ class ControlPoint(DurableModel):
 
 @dataclass(frozen=True)
 class ControlChannel(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.control-channel"
+    SCHEMA_ID: ClassVar[str] = "scqsim.control-channel"
 
     control_id: str
     operator_id: str
@@ -1205,7 +1205,7 @@ class ControlChannel(DurableModel):
 
 @dataclass(frozen=True)
 class ControlSchedule(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.control-schedule"
+    SCHEMA_ID: ClassVar[str] = "scqsim.control-schedule"
 
     schedule_id: str
     source: ArtifactRef
@@ -1230,7 +1230,7 @@ class ControlSchedule(DurableModel):
 
 @dataclass(frozen=True)
 class ClosedSystemStudy(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.closed-system-study"
+    SCHEMA_ID: ClassVar[str] = "scqsim.closed-system-study"
 
     study_id: str
     source: ArtifactRef
@@ -1264,7 +1264,7 @@ class ClosedSystemStudy(DurableModel):
 
 @dataclass(frozen=True)
 class StateSurvival(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.state-survival"
+    SCHEMA_ID: ClassVar[str] = "scqsim.state-survival"
 
     input_state_id: str
     survival: float
@@ -1298,7 +1298,7 @@ class FidelityDefinition(StrEnum):
 
 @dataclass(frozen=True)
 class GateResult(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.gate-result"
+    SCHEMA_ID: ClassVar[str] = "scqsim.gate-result"
 
     result_id: str
     study_ref: ArtifactRef
@@ -1371,7 +1371,7 @@ class GateResult(DurableModel):
 
 @dataclass(frozen=True)
 class EvidenceReceipt(DurableModel):
-    SCHEMA_ID: ClassVar[str] = "scqgate.evidence-receipt"
+    SCHEMA_ID: ClassVar[str] = "scqsim.evidence-receipt"
 
     receipt_id: str
     source: ArtifactRef

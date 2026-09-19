@@ -77,5 +77,5 @@ surfaces are classical boundary evidence, not a canonical source export.
 
 SCNSim must choose and seal the exact producer payloads for branch contribution
 evidence, the rank receipt, and explicit no-flux versus sourced bias/fluxoid
-provenance. SCQGate does not infer these facts from names, indices, geometry, or
+provenance. SCQSim does not infer these facts from names, indices, geometry, or
 classical response surfaces.

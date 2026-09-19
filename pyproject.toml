@@ -3,7 +3,7 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "scqgate"
+name = "scqsim"
 version = "1.0.0.dev0"
 description = "Representation-neutral quantum realization and gate analysis for superconducting circuits."
 readme = "README.md"
@@ -16,9 +16,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/OrPenStrike/scqgate"
-Issues = "https://github.com/OrPenStrike/scqgate/issues"
-Repository = "https://github.com/OrPenStrike/scqgate"
+Homepage = "https://github.com/OrPenStrike/scqsim"
+Issues = "https://github.com/OrPenStrike/scqsim/issues"
+Repository = "https://github.com/OrPenStrike/scqsim"
 
 [dependency-groups]
 dev = [
@@ -34,7 +34,7 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-scqgate = ["py.typed"]
+scqsim = ["py.typed"]
 
 [tool.ruff]
 line-length = 100
@@ -46,4 +46,4 @@ select = ["B", "E", "F", "I", "RUF", "UP"]
 [tool.mypy]
 python_version = "3.11"
 strict = true
-files = ["src/scqgate"]
+files = ["src/scqsim"]

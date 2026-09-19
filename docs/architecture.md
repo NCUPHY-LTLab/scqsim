@@ -1,10 +1,10 @@
 # Architecture
 
-SCQGate starts after a classical producer seals a complete conservative source:
+SCQSim starts after a classical producer seals a complete conservative source:
 
 ```text
 SCNSim CircuitQuantizationSource
-  -> SCQGate source validation
+  -> SCQSim source validation
   -> scqubits Hamiltonian and Hilbert realization
   -> QuTiP closed-system dynamics
   -> gate metrics and immutable evidence receipt
